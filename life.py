@@ -55,15 +55,13 @@ def print_board():
                                  ))
 
 
-def check_board() -> bool:
+def check_board():
     """
     Checks each cell to see if it dies, grows, or remains.
     <= 1: Dies
     2-3: Remains
     3: Spawns (Empty spaces)
     4+ : Dies
-
-    Returns if game was changed
     """
     changes.clear()
 
@@ -108,10 +106,6 @@ def check_board() -> bool:
     
     for change in changes:
         board[change[0]][change[1]] = change[2]
-    
-    if len(changes) != 0:
-        return True
-    return False
 
 
 def all_dead() -> bool:
@@ -146,11 +140,11 @@ def get_index_from_pos(pos : tuple) -> tuple:
     j = None
 
     for k in range(1, HEIGHT):
-        if pos[0] < k * CELL_SIZE:
+        if pos[1] < k * CELL_SIZE:
             i = k - 1
             break
     for l in range(1, WIDTH):
-        if pos[1] < l * CELL_SIZE:
+        if pos[0] < l * CELL_SIZE:
             j = l - 1
             break
 
@@ -229,7 +223,7 @@ while run:
     win.fill(BLACK)
 
     display_grid()
-    run = check_board()
+    check_board()
     print_board()
 
     pygame.display.flip()
@@ -247,5 +241,8 @@ while run:
 
         if event.type == pygame.QUIT: 
             run = False
+
+    if all_dead():
+        run = False
 
     clock.tick(fps)
